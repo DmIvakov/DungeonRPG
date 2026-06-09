@@ -69,8 +69,4 @@ Testing/
 .cache/
 
 # Visual Studio Code settings
-<<<<<<< HEAD
 .vscode/
-=======
-.vscode/
->>>>>>> ebbd99524d0aa5fe76c929659154da8f75094c57
