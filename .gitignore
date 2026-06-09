@@ -34,15 +34,15 @@
 *.a
 *.lib
 
-# # Executables
-# *.exe
-# *.out
-# *.app
+# Executables
+*.exe
+*.out
+*.app
 
-# # Build directories
-# build/
-# Build/
-# build-*/
+# Build directories
+build/
+Build/
+build-*/
 
 # CMake generated files
 CMakeFiles/
@@ -68,5 +68,5 @@ vcpkg_installed/
 Testing/
 .cache/
 
-# # Visual Studio Code settings
-# .vscode/
+# Visual Studio Code settings
+.vscode/
