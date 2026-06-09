@@ -18,3 +18,16 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     "$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets"
     COMMENT "Copying assets to build directory..."
 )
+
+
+
+# Release packaging
+
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION .)
+
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/assets" DESTINATION .)
+
+set(CPACK_PACKAGE_NAME "DungeonRPG")
+set(CPACK_PACKAGE_VERSION "1.0.0")
+set(CPACK_GENERATOR "ZIP") 
+include(CPack)
