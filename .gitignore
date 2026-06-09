@@ -70,3 +70,6 @@ Testing/
 
 # Visual Studio Code settings
 .vscode/
+
+# Releases files
+releases/
