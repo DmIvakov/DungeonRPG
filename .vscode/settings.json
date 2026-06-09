@@ -1,0 +1,5 @@
+{
+    "code-runner.executorMap": {
+        "cpp": "cd $workspaceRoot && g++ src/*.cpp -o build/DungeonRPG.exe -lwinmm && cd build && ./DungeonRPG.exe"
+    }
+}
