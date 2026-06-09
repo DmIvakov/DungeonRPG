@@ -49,6 +49,24 @@ cmake --build build
 ./build/DungeonRPG
 ```
 
+### Building a Production Release (Packaging)
+If you want to package the game into a clean, ready-to-share ZIP archive without any source code or compiler clutter, run these commands:
+
+1. Configure the project in Release mode:
+   ```bash
+   cmake -B build -DCMAKE_BUILD_TYPE=Release
+   ```
+2. Build the optimized binaries:
+   ```bash
+   cmake --build build --config Release
+   ```
+3. Generate the distribution package via CPack:
+   ```bash
+   cd build && cpack
+   ```
+
+After CPack finishes, a brand new `/releases` folder will automatically appear in the project root containing a clean **`DungeonRPG-1.0.0-win64.zip`** archive, fully ignored by Git and ready to be sent to players.
+
 ## Upcoming Roadmap
 * 🚀 **SFML Graphics Integration:** Migration from console ASCII output to a fully graphical 2D window, keeping the console for debugging/logging.
 * Advanced procedural level generation.
