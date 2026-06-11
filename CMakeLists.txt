@@ -12,6 +12,19 @@ target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/
 
 target_link_libraries(${PROJECT_NAME} PRIVATE winmm)
 
+# === Static Linking for Release ===
+if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if(MSVC)
+        # MSVC:
+        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
+    else()
+        # GCC:
+        target_link_options(${PROJECT_NAME} PRIVATE -static -static-libgcc -static-libstdc++)
+    endif()
+endif()
+# ====================================
+
+# Copy assets after build
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     "${CMAKE_CURRENT_SOURCE_DIR}/assets"
@@ -19,10 +32,7 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMENT "Copying assets to build directory..."
 )
 
-
-
 # Release packaging
-
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION .)
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/assets" DESTINATION .)
 
