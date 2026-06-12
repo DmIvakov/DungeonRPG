@@ -1,32 +1,35 @@
-#ifdef _WIN32
-#include <windows.h>
-#include <mmsystem.h>
-#pragma comment(lib, "winmm.lib")
-#endif
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+#include <iostream>
 
-#include "Game.h"
+int main() {
+    // Initialize the window according to the SFML 3 standard
+    sf::RenderWindow window(sf::VideoMode({800, 600}), "Dungeon RPG - SFML 3 Success");
 
-int main()
-{
-    #ifdef _WIN32
-        // Enable ANSI escape codes in the Windows console
-        HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-        if (hOut != INVALID_HANDLE_VALUE) {
-            DWORD dwMode = 0;
-            if (GetConsoleMode(hOut, &dwMode)) {
-                dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-                SetConsoleMode(hOut, dwMode);
+    // Initialize and play background music
+    sf::Music music;
+    if (!music.openFromFile("assets/audio/DungeonRPG.wav")) {
+        std::cout << "Failed to load audio file!" << std::endl;
+    } else {
+        music.setLooping(true); // In SFML 3 release, setLooping is used precisely
+        music.play();
+    }
+
+    // Main loop of the graphics engine
+    while (window.isOpen()) {
+        // Correct event handling syntax for SFML 3 using std::optional
+        while (const std::optional event = window.pollEvent()) {
+            if (event->is<sf::Event::Closed>()) {
+                window.close();
             }
         }
 
-        PlaySound(TEXT("assets/audio/DungeonRPG.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
-    #endif
+        // Clear the screen with a dark gray color
+        window.clear(sf::Color(30, 30, 30));
+        
+        // Display the rendered frame on the screen
+        window.display();
+    }
 
-    PlaySound(TEXT("assets/audio/DungeonRPG.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
-
-    Game game;
-
-    game.run();
-    
     return 0;
 }
