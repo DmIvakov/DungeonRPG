@@ -8,7 +8,7 @@ int main() {
 
     // Initialize and play background music
     sf::Music music;
-    if (!music.openFromFile("assets/audio/DungeonRPG.wav")) {
+    if (!music.openFromFile("assets/audio/DungeonRPG.ogg")) {
         std::cout << "Failed to load audio file!" << std::endl;
     } else {
         music.setLooping(true); // In SFML 3 release, setLooping is used precisely
