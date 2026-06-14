@@ -8,8 +8,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(SFML_STATIC_LIBRARIES TRUE) 
 find_package(SFML 3 COMPONENTS Graphics Window System Audio REQUIRED)
 
-file(GLOB_RECURSE SOURCES "src/main.cpp")
-# file(GLOB_RECURSE SOURCES "src/*.cpp")
+# file(GLOB_RECURSE SOURCES "src/main.cpp")
+file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 

@@ -19,10 +19,8 @@ int main()
             }
         }
 
-        PlaySound(TEXT("assets/audio/DungeonRPG.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+        // PlaySound(TEXT("assets/audio/DungeonRPG.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
     #endif
-
-    PlaySound(TEXT("assets/audio/DungeonRPG.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 
     Game game;
 
