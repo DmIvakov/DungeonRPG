@@ -12,7 +12,7 @@ HudRenderer::HudRenderer()
 
     statsText.setCharacterSize(18);            
     statsText.setFillColor(sf::Color::White);   
-    statsText.setPosition({15.f, 12.f});        
+    statsText.setPosition({15.f, 650.f});        
 }
 
 

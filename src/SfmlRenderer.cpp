@@ -12,7 +12,7 @@ void SfmlRenderer::draw(
 )
 {
     sf::RenderStates states;
-    states.transform.translate({ 0.f, 48.f });
+    // states.transform.translate({ 0.f, 48.f });
 
     sf::RectangleShape tile(
         sf::Vector2f(
