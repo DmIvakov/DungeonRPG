@@ -2,13 +2,21 @@
 #include <vector>
 
 #include "Game.h"
-#include "Renderer.h"
+#include "SfmlRenderer.h"
 
 Game::Game()
     :
+    window(
+        sf::VideoMode(
+            sf::Vector2u(
+                40 * 32,
+                20 * 32
+            )
+        ),
+        "Dungeon RPG"
+    ),
     map(40, 20),
     player(0, 0),
-    isRunning(true),
     currentFloor(1)
 {
     generator.generate(
@@ -20,124 +28,82 @@ Game::Game()
 
 void Game::run()
 {
-    while(isRunning)
+    while(window.isOpen())
     {
-        Renderer::draw(
+        input();
+
+        renderer.draw(
+            window,
             map,
             player,
             enemies,
             currentFloor
         );
-
-        input();
     }
 }
 
 void Game::input()
 {
-    int dx = 0;
-    int dy = 0; 
-
-    unsigned char key;
-
-    std::cin >> key;
- 
-    switch(key)
+    while(const std::optional event =
+        window.pollEvent())
     {
-        case 'w':
-            dy = -1;
-            break;
+        if(event->is<sf::Event::Closed>())
+        {
+            window.close();
+        }
 
-        case 's':
-            dy = 1;
-            break;
+        if(const auto* keyPressed =
+            event->getIf<sf::Event::KeyPressed>())
+        {
+            int dx = 0;
+            int dy = 0;
 
-        case 'a':
-            dx = -1;
-            break;
+            switch(keyPressed->code)
+            {
+                case sf::Keyboard::Key::W:
+                    dy = -1;
+                    break;
 
-        case 'd':
-            dx = 1;
-            break;
+                case sf::Keyboard::Key::S:
+                    dy = 1;
+                    break;
 
-        case 'q':
-            dx = -1;
-            dy = -1;
-            break;
-        
-        case 'e':
-            dx = 1;
-            dy = -1;
-            break;
-        
-        case 'z':
-            dx = -1;
-            dy = 1;
-            break;
-        
-        case 'x':
-            dx = 1;
-            dy = 1;
-            break;
+                case sf::Keyboard::Key::A:
+                    dx = -1;
+                    break;
 
-        case 127: // Delete key for exiting the game
-            isRunning = false;
-            break;
-    }
+                case sf::Keyboard::Key::D:
+                    dx = 1;
+                    break;
 
-    int newX = player.getX() + dx;
-    int newY = player.getY() + dy;
+                default:
+                    break;
+            }
 
-    // Check if the player has reached the exit
-    if(map.isExit(newX, newY))
-    {
-        currentFloor++;
+            if(dx != 0 || dy != 0)
+            {
+                int newX = player.getX() + dx;
+                int newY = player.getY() + dy;
 
-        generator.generate(
-            map,
-            player,
-            enemies
-        );
+                if(map.isWalkable(newX, newY))
+                {
+                    player.move(dx, dy);
 
-        return;
-    }
-
-
-        
-    // Check for enemy at the new position
-
-    // Enemy* enemy = getEnemyAt(newX, newY);
-
-    auto it = getEnemyIteratorAt(newX, newY);
-
-    if(it != enemies.end())
-    {
-        enemies.erase(it);
-
-        player.addExp(10);
-
-        return;
-    }
-
-    // if(enemy != nullptr)
-    // {
-    //     enemy->takeDamage(
-    //         player.getDamage()
-    //     );
-
-    //     player.addExp(10);
-
-    //     return;
-    // }
-
-
-
-    // Check if the new position is walkable
-    if(map.isWalkable(newX, newY))
-    {
-        player.move(dx, dy);
+                    if(map.isExit(newX, newY))
+                    {
+                        currentFloor++;
+                        generator.generate(
+                            map,
+                            player,
+                            enemies
+                        );
+                    }
+                }
+            }
+        }
     }
 }
+
 
 std::vector<Enemy>::iterator Game::getEnemyIteratorAt(
     int x, 
