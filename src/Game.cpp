@@ -28,6 +28,12 @@ Game::Game()
 
 void Game::run()
 {
+    sf::Music music;
+    if (music.openFromFile("assets/audio/DungeonRPG.ogg")) {
+        music.setLooping(true);
+        music.play();
+    }
+    
     while(window.isOpen())
     {
         input();
