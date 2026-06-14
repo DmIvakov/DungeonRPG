@@ -9,13 +9,13 @@ Game::Game()
     window(
         sf::VideoMode(
             sf::Vector2u(
-                40 * 32,
-                20 * 32 + 48
+                MAP_WIDTH * SfmlRenderer::TILE_SIZE,
+                (MAP_HEIGHT * SfmlRenderer::TILE_SIZE) + HUD_HEIGHT
             )
         ),
         "Dungeon RPG"
     ),
-    map(40, 20),
+    map(MAP_WIDTH, MAP_HEIGHT),
     player(0, 0),
     currentFloor(1),
     hudRenderer()

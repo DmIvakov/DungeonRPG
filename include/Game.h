@@ -46,6 +46,10 @@ private:
     );
 
 public:
+    static constexpr int MAP_WIDTH = 40;
+    static constexpr int MAP_HEIGHT = 20;
+    static constexpr int HUD_HEIGHT = 48;
+
     Game();
 
     void run();

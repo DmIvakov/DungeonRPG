@@ -8,10 +8,9 @@
 
 class SfmlRenderer
 {
-private:
+public:
     static constexpr int TILE_SIZE = 32;
 
-public:
     SfmlRenderer();
 
     void draw(
