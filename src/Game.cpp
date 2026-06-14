@@ -33,7 +33,7 @@ void Game::run()
         music.setLooping(true);
         music.play();
     }
-    
+
     while(window.isOpen())
     {
         input();
@@ -90,6 +90,21 @@ void Game::input()
             {
                 int newX = player.getX() + dx;
                 int newY = player.getY() + dy;
+
+                // Check for enemy at the new position
+
+                // Enemy* enemy = getEnemyAt(newX, newY);
+
+                auto it = getEnemyIteratorAt(newX, newY);
+
+                if(it != enemies.end())
+                {
+                    enemies.erase(it);
+
+                    player.addExp(10);
+
+                    return;
+                }
 
                 if(map.isWalkable(newX, newY))
                 {
