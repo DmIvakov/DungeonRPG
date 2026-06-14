@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <utility>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -28,12 +29,16 @@ private:
 
     void input();
 
-    std::vector<Enemy>::iterator getEnemyIteratorAt(
-        int x,
-        int y
-    );
+    std::pair<int, int> parseKeyPressedToCoord(
+        const sf::Event::KeyPressed& keyEvent
+    ) const;
 
-    Enemy* getEnemyAt(
+    void processInteraction(
+        int dx, 
+        int dy
+    );
+    
+    std::vector<Enemy>::iterator getEnemyIteratorAt(
         int x,
         int y
     );

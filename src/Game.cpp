@@ -1,5 +1,5 @@
 #include <iostream>
-#include <vector>
+#include <unordered_map>
 
 #include "Game.h"
 #include "SfmlRenderer.h"
@@ -24,6 +24,8 @@ Game::Game()
         player,
         enemies
     );
+
+    window.setFramerateLimit(60);
 }
 
 void Game::run()
@@ -61,93 +63,74 @@ void Game::input()
         if(const auto* keyPressed =
             event->getIf<sf::Event::KeyPressed>())
         {
-            int dx = 0;
-            int dy = 0;
-
-            switch(keyPressed->code)
-            {
-                case sf::Keyboard::Key::W:
-                    dy = -1;
-                    break;
-
-                case sf::Keyboard::Key::S:
-                    dy = 1;
-                    break;
-
-                case sf::Keyboard::Key::A:
-                    dx = -1;
-                    break;
-
-                case sf::Keyboard::Key::D:
-                    dx = 1;
-                    break;
-
-                case sf::Keyboard::Key::Q:
-                    dy = -1;
-                    dx = -1;
-                    break;
-
-                case sf::Keyboard::Key::E:
-                    dy = -1;
-                    dx = 1;
-                    break;
-                    
-                case sf::Keyboard::Key::Z:
-                    dy = 1;
-                    dx = -1;
-                    break;
-
-                case sf::Keyboard::Key::X:
-                    break;
-                
-                case sf::Keyboard::Key::C:
-                    dy = 1;
-                    dx = 1;
-                    break;
-
-                default:
-                    break;
-            }
-
-            if(dx != 0 || dy != 0)
-            {
-                int newX = player.getX() + dx;
-                int newY = player.getY() + dy;
-
-                // Check for enemy at the new position
-
-                // Enemy* enemy = getEnemyAt(newX, newY);
-
-                auto it = getEnemyIteratorAt(newX, newY);
-
-                if(it != enemies.end())
-                {
-                    enemies.erase(it);
-
-                    player.addExp(10);
-
-                    return;
-                }
-
-                if(map.isWalkable(newX, newY))
-                {
-                    player.move(dx, dy);
-
-                    if(map.isExit(newX, newY))
-                    {
-                        currentFloor++;
-                        generator.generate(
-                            map,
-                            player,
-                            enemies
-                        );
-                    }
-                }
-            }
+            auto [dx, dy] = parseKeyPressedToCoord(*keyPressed);
+            
+            // TODO: Implement "Skip Turn / Wait" mechanic. Currently ignoring {0, 0} ('X' key).
+            if (dx != 0 || dy != 0) processInteraction(dx, dy); 
         }
     }
 }
 
+std::pair<int, int> Game::parseKeyPressedToCoord(
+    const sf::Event::KeyPressed& keyEvent
+) const
+{
+    static const std::unordered_map<sf::Keyboard::Key, std::pair<int, int>> moveMap = {
+        {sf::Keyboard::Key::W, {0, -1}},
+        {sf::Keyboard::Key::S, {0, 1}},
+        {sf::Keyboard::Key::A, {-1, 0}},
+        {sf::Keyboard::Key::D, {1, 0}},
+        {sf::Keyboard::Key::Q, {-1, -1}},
+        {sf::Keyboard::Key::E, {1, -1}},
+        {sf::Keyboard::Key::Z, {-1, 1}},
+        {sf::Keyboard::Key::C, {1, 1}},
+        {sf::Keyboard::Key::X, {0, 0}}
+    };
+
+    auto it = moveMap.find(keyEvent.code);
+    if (it != moveMap.end()) {
+        return it->second; 
+    }
+
+    return {0, 0}; 
+
+}
+
+void Game::processInteraction(int dx, int dy)
+{
+    int newX = player.getX() + dx;
+    int newY = player.getY() + dy;
+
+    // Enemy interaction
+    auto enemyIt = getEnemyIteratorAt(newX, newY);
+    if (enemyIt != enemies.end())
+    {
+        std::cout << "Player attacks enemy at (" << newX << ", " << newY << ")" << std::endl;
+
+        // one shot
+        enemies.erase(enemyIt);
+        player.addExp(10);
+        
+        return; 
+    }
+
+    // Movement interaction
+    if (!map.isWalkable(newX, newY))
+    {
+        return; 
+    }
+
+    player.move(dx, dy);
+
+
+    // Exit interaction 
+    if (map.isExit(newX, newY))
+    {
+        currentFloor++;
+        generator.generate(map, player, enemies);
+        std::cout << "Player moved to floor " << currentFloor << std::endl;
+    }   
+}
 
 std::vector<Enemy>::iterator Game::getEnemyIteratorAt(
     int x, 
@@ -162,18 +145,4 @@ std::vector<Enemy>::iterator Game::getEnemyIteratorAt(
         }
     }
     return enemies.end();
-}
-
-
-Enemy* Game::getEnemyAt(
-    int x,
-    int y
-)
-{
-    auto it = getEnemyIteratorAt(x, y);
-    if (it != enemies.end())
-    {
-        return &(*it);
-    }
-    return nullptr;
 }
