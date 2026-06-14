@@ -1,21 +1,17 @@
 #pragma once
 
-#include "Entity.h"
+#include "Character.h"
 
-class Player : public Entity
+class Player : public Character
 {
 private:
-    int hp;
     int level;
     int exp;
-    int damage;
 
 public:
     Player(int x, int y);
 
-    int getHp() const;
     int getLevel() const;
     int getExp() const;
-    int getDamage() const;
     void addExp(int amount);
 };

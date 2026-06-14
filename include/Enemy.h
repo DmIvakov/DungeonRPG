@@ -1,16 +1,9 @@
 #pragma once
 
-#include "Entity.h"
+#include "Character.h"
 
-class Enemy : public Entity
+class Enemy : public Character
 {
-private:
-    int hp;
-    int damage;
-
 public:
     Enemy(int x, int y);
-
-    int getHp() const;
-    int getDamage() const;
 };

@@ -2,17 +2,10 @@
 
 Player::Player(int x, int y)
      :
-    Entity(x, y),
-    hp(100),
+    Character(x, y, 100, 10),
     level(1),
-    exp(0),
-    damage(10)
+    exp(0)
 {
-}
-
-int Player::getHp() const
-{
-    return hp;
 }
 
 int Player::getLevel() const
@@ -23,11 +16,6 @@ int Player::getLevel() const
 int Player::getExp() const
 {
     return exp;
-}
-
-int Player::getDamage() const
-{
-    return damage;
 }
 
 void Player::addExp(int amount)
