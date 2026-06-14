@@ -12,6 +12,8 @@ private:
     static constexpr int TILE_SIZE = 32;
 
 public:
+    SfmlRenderer();
+
     void draw(
         sf::RenderWindow& window,
         const Map& map,

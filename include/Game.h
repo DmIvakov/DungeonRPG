@@ -11,6 +11,7 @@
 #include "Enemy.h"
 #include "LevelGenerator.h"
 #include "SfmlRenderer.h"
+#include "HudRenderer.h"
 
 class Game
 {
@@ -24,6 +25,7 @@ private:
 
     LevelGenerator generator;
     SfmlRenderer renderer;
+    HudRenderer hudRenderer;
 
     int currentFloor;
 

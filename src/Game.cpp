@@ -10,14 +10,15 @@ Game::Game()
         sf::VideoMode(
             sf::Vector2u(
                 40 * 32,
-                20 * 32
+                20 * 32 + 48
             )
         ),
         "Dungeon RPG"
     ),
     map(40, 20),
     player(0, 0),
-    currentFloor(1)
+    currentFloor(1),
+    hudRenderer()
 {
     generator.generate(
         map,
@@ -40,6 +41,8 @@ void Game::run()
     {
         input();
 
+        window.clear();
+
         renderer.draw(
             window,
             map,
@@ -47,6 +50,15 @@ void Game::run()
             enemies,
             currentFloor
         );
+
+        hudRenderer.draw(
+            window,
+            player,
+            enemies,
+            currentFloor
+        );
+
+        window.display();
     }
 }
 
