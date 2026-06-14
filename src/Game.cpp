@@ -82,6 +82,29 @@ void Game::input()
                     dx = 1;
                     break;
 
+                case sf::Keyboard::Key::Q:
+                    dy = -1;
+                    dx = -1;
+                    break;
+
+                case sf::Keyboard::Key::E:
+                    dy = -1;
+                    dx = 1;
+                    break;
+                    
+                case sf::Keyboard::Key::Z:
+                    dy = 1;
+                    dx = -1;
+                    break;
+
+                case sf::Keyboard::Key::X:
+                    break;
+                
+                case sf::Keyboard::Key::C:
+                    dy = 1;
+                    dx = 1;
+                    break;
+
                 default:
                     break;
             }
