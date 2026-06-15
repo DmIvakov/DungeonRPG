@@ -36,7 +36,7 @@ A 2D roguelike RPG written in C++ using SFML and CMake.
 * Background music support.
 * Audio assets loaded from the `assets` directory.
 
-https://github.com/user-attachments/assets/ba737a00-8519-4b28-a3fc-7d543a56ea24
+<video src="https://github.com/user-attachments/assets/ba737a00-8519-4b28-a3fc-7d543a56ea24" controls width="100%" height="40" style="max-height: 40px;"></video>
 
 ### Technical Features
 
