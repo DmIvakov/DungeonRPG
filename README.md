@@ -4,6 +4,8 @@ A 2D roguelike RPG written in C++ using SFML and CMake.
 
 > ⚠️ **Project Status:** Pre-Alpha. This project is actively developed as a learning and portfolio project. Features, architecture, and assets are subject to frequent changes and refactoring.
 
+![Preview](media/preview.jpg)
+
 ## Features
 
 ### Gameplay
@@ -34,6 +36,8 @@ A 2D roguelike RPG written in C++ using SFML and CMake.
 * Background music support.
 * Audio assets loaded from the `assets` directory.
 
+<video controls src="DungeonRPG.mp4" title="Demo"></video>
+
 ### Technical Features
 
 * Modern C++ project structure.
@@ -53,11 +57,11 @@ build/          Generated build files
 
 ## Controls
 
-```text
-Q W E
-A   D
-Z X C
-```
+| | | |
+| :---: | :---: | :---: |
+| <kbd>Q</kbd> | <kbd>W</kbd> | <kbd>E</kbd> |
+| <kbd>A</kbd> | 🕹️ | <kbd>D</kbd> |
+| <kbd>Z</kbd> | <kbd>X</kbd> | <kbd>C</kbd> |
 
 Movement is supported in 8 directions.
 
