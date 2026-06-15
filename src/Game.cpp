@@ -15,6 +15,7 @@ Game::Game()
         ),
         "Dungeon RPG"
     ),
+    ticks(-1),
     map(MAP_WIDTH, MAP_HEIGHT),
     player(0, 0),
     currentFloor(1),
@@ -39,12 +40,15 @@ void Game::run()
 
     while(window.isOpen())
     {
+        ticks++;
+
         input();
 
         window.clear();
 
         renderer.draw(
             window,
+            ticks,
             map,
             player,
             enemies,
@@ -71,6 +75,8 @@ void Game::input()
         {
             window.close();
         }
+
+        player.makeStop();
 
         if(const auto* keyPressed =
             event->getIf<sf::Event::KeyPressed>())
@@ -112,6 +118,8 @@ void Game::processInteraction(int dx, int dy)
 {
     int newX = player.getX() + dx;
     int newY = player.getY() + dy;
+
+    player.makeMove();
 
     if(dx != 0) {
         if(dx > 0) player.faceRight();

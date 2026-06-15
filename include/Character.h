@@ -9,7 +9,7 @@ protected:
     int damage;
 
     bool facingRight;
-
+    bool moving;
 public:
     Character(int x, int y, int maxHp, int damage, int hp = -1);
 
@@ -20,4 +20,8 @@ public:
     bool isFacingRight() const;
     void faceRight();
     void faceLeft();
+
+    bool isMoving() const;
+    void makeMove();
+    void makeStop();
 };

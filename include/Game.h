@@ -17,6 +17,7 @@ class Game
 {
 private:
     sf::RenderWindow window;
+    int ticks;
 
     Map map;
     Player player;

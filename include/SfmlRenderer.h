@@ -16,7 +16,9 @@ private:
     sf::IntRect playerRect;
     sf::IntRect enemyRect;
 
-    static constexpr float ORIGINAL_TILE_SIZE = 16.f;   
+    int animationSpeed;
+
+    static constexpr float ORIGINAL_TILE_SIZE = 16.f;
 public:
     static constexpr int TILE_SIZE = 32;
 
@@ -24,6 +26,7 @@ public:
 
     void draw(
         sf::RenderWindow& window,
+        int ticks,
         const Map& map,
         const Player& player,
         const std::vector<Enemy>& enemies,

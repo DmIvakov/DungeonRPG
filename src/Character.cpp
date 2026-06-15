@@ -6,7 +6,8 @@ Character::Character(int x, int y, int maxHp, int damage, int hp)
     maxHp(maxHp),
     damage(damage),
     hp(hp == -1 ? maxHp : hp),
-    facingRight(true)
+    facingRight(true),
+    moving(false)
 {
 }
 
@@ -25,6 +26,7 @@ int Character::getDamage() const
     return damage;
 }
 
+
 bool Character::isFacingRight() const
 {
     return facingRight;
@@ -38,4 +40,20 @@ void Character::faceRight()
 void Character::faceLeft() 
 {
     facingRight = false;
+}
+
+
+bool Character::isMoving() const
+{
+    return moving;
+}
+
+void Character::makeMove()
+{
+    moving = true;
+}
+
+void Character::makeStop()
+{
+    moving = false;
 }

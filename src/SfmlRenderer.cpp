@@ -1,7 +1,10 @@
 #include <stdexcept>
 #include "SfmlRenderer.h"
 
-SfmlRenderer::SfmlRenderer() {
+SfmlRenderer::SfmlRenderer()
+    :
+    animationSpeed(12)
+{
     if (!atlasTexture.loadFromFile("assets/tileset/0x72_DungeonTilesetII_v1.7/0x72_DungeonTilesetII_v1.7.png")) {
         throw std::runtime_error("Failed to load tileset atlas!");
     }
@@ -16,6 +19,7 @@ SfmlRenderer::SfmlRenderer() {
 
 void SfmlRenderer::draw(
     sf::RenderWindow& window,
+    int ticks,
     const Map& map,
     const Player& player,
     const std::vector<Enemy>& enemies,
@@ -54,14 +58,20 @@ void SfmlRenderer::draw(
         }
     }
 
-    tileSprite.setColor(sf::Color::White);  
+    tileSprite.setColor(sf::Color::White); 
+    tileSprite.setOrigin({ ORIGINAL_TILE_SIZE / 2, 0.f });
 
     // Enemies
-    tileSprite.setTextureRect(enemyRect);
-    tileSprite.setOrigin({ ORIGINAL_TILE_SIZE / 2, 0.f }); 
-
     for(const Enemy& enemy : enemies)
     {
+        int enemyBaseFrame = enemy.isMoving() ? 4 : 0;
+        int enemyCurrentSubFrame = (ticks / animationSpeed) % 4;
+        int enemyActualFrameIndex = enemyBaseFrame + enemyCurrentSubFrame;
+
+        sf::IntRect animatedEnemyRect = enemyRect;
+        animatedEnemyRect.position.x += enemyActualFrameIndex * ORIGINAL_TILE_SIZE;
+        tileSprite.setTextureRect(animatedEnemyRect);
+
         if (enemy.isFacingRight()) {
             tileSprite.setScale({ scale, scale });
         } else {
@@ -77,7 +87,15 @@ void SfmlRenderer::draw(
     
 
     // Player
-    tileSprite.setTextureRect(playerRect);
+    int playerBaseFrame = player.isMoving() ? 4 : 0;
+    int playerCurrentSubFrame = (ticks / animationSpeed) % 4; 
+
+    int playerActualFrameIndex = playerBaseFrame + playerCurrentSubFrame;
+
+    sf::IntRect animatedPlayerRect = playerRect;
+    animatedPlayerRect.position.x += playerActualFrameIndex * ORIGINAL_TILE_SIZE;
+
+    tileSprite.setTextureRect(animatedPlayerRect);
     
     if (player.isFacingRight()) {
         tileSprite.setScale({ scale, scale });
@@ -87,7 +105,10 @@ void SfmlRenderer::draw(
 
     float pX = player.getX() * TILE_SIZE + (TILE_SIZE / 2.f);
     float pY = player.getY() * TILE_SIZE - (28 - 16) * scale - 2.f; 
-    
+
+
     tileSprite.setPosition({pX, pY});
     window.draw(tileSprite, states);
+
+    // TODO: Refactor Enemy and Player animation : DRY
 }
