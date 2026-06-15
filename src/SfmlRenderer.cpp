@@ -1,6 +1,14 @@
+#include <stdexcept>
 #include "SfmlRenderer.h"
 
 SfmlRenderer::SfmlRenderer() {
+    if (!atlasTexture.loadFromFile("assets/tileset/0x72_DungeonTilesetII_v1.7/0x72_DungeonTilesetII_v1.7.png")) {
+        throw std::runtime_error("Failed to load tileset atlas!");
+    }
+
+    tileRects[TileType::Floor] = sf::IntRect({16, 64}, {16, 16});
+    tileRects[TileType::Wall] = sf::IntRect({16, 16}, {16, 16});
+    tileRects[TileType::Exit] = sf::IntRect({48, 96}, {16, 16});
 }
 
 void SfmlRenderer::draw(
@@ -14,45 +22,44 @@ void SfmlRenderer::draw(
     sf::RenderStates states;
     // states.transform.translate({ 0.f, 48.f });
 
+
+    // for tiles
+    sf::Sprite tileSprite(atlasTexture);
+    float scale = static_cast<float>(TILE_SIZE) / 16.f;
+    tileSprite.setScale({scale, scale});
+
+
+    for(int y = 0; y < map.getHeight(); y++)
+    {
+        for(int x = 0; x < map.getWidth(); x++)
+        {
+            tileSprite.setPosition(
+                sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE)
+            );
+
+            TileType currentType = map.tiles[y][x];
+
+            tileSprite.setTextureRect(tileRects[currentType]);
+
+            // make walls a bit darker
+            if (currentType == TileType::Wall) {
+                tileSprite.setColor(sf::Color(155, 155, 155)); 
+            } else {
+                tileSprite.setColor(sf::Color::White); 
+            }
+
+            window.draw(tileSprite, states); 
+        }
+    }
+
+
+    // for player and enemies 
     sf::RectangleShape tile(
         sf::Vector2f(
             TILE_SIZE,
             TILE_SIZE
         )
     );
-
-    for(int y = 0; y < map.getHeight(); y++)
-    {
-        for(int x = 0; x < map.getWidth(); x++)
-        {
-            tile.setPosition(
-                sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE)
-            );
-
-            switch(map.tiles[y][x])
-            {
-                case TileType::Wall:
-                    tile.setFillColor(
-                        sf::Color::White
-                    );
-                    break;
-
-                case TileType::Floor:
-                    tile.setFillColor(
-                        sf::Color(50,50,50)
-                    );
-                    break;
-
-                case TileType::Exit:
-                    tile.setFillColor(
-                        sf::Color::Yellow
-                    );
-                    break;
-            }
-
-            window.draw(tile, states); 
-        }
-    }
 
     // Player
     tile.setFillColor(

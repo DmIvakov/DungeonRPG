@@ -1,5 +1,6 @@
 #pragma once
 
+#include <unordered_map>
 #include <SFML/Graphics.hpp>
 
 #include "Map.h"
@@ -8,6 +9,10 @@
 
 class SfmlRenderer
 {
+private:
+    sf::Texture atlasTexture;
+    std::unordered_map<TileType, sf::IntRect> tileRects;
+
 public:
     static constexpr int TILE_SIZE = 32;
 
