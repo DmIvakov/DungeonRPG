@@ -113,6 +113,11 @@ void Game::processInteraction(int dx, int dy)
     int newX = player.getX() + dx;
     int newY = player.getY() + dy;
 
+    if(dx != 0) {
+        if(dx > 0) player.faceRight();
+        else player.faceLeft();
+    }
+
     // Enemy interaction
     auto enemyIt = getEnemyIteratorAt(newX, newY);
     if (enemyIt != enemies.end())

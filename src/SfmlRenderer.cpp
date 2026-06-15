@@ -27,7 +27,8 @@ void SfmlRenderer::draw(
 
     // Tiles
     sf::Sprite tileSprite(atlasTexture);
-    float scale = static_cast<float>(TILE_SIZE) / 16.f;
+    tileSprite.setOrigin({ 0.f, 0.f });
+    float scale = static_cast<float>(TILE_SIZE) / ORIGINAL_TILE_SIZE;
     tileSprite.setScale({scale, scale});
 
     for(int y = 0; y < map.getHeight(); y++)
@@ -53,30 +54,40 @@ void SfmlRenderer::draw(
         }
     }
 
-    tileSprite.setColor(sf::Color::White);
-
-     
+    tileSprite.setColor(sf::Color::White);  
 
     // Enemies
     tileSprite.setTextureRect(enemyRect);
+    tileSprite.setOrigin({ ORIGINAL_TILE_SIZE / 2, 0.f }); 
 
     for(const Enemy& enemy : enemies)
     {
-        float eX = enemy.getX() * TILE_SIZE;
-        float eY = enemy.getY() * TILE_SIZE - 2.f; // not sure why this number, but it does work
-                                                    // I guess it's due to scale(x), so we need shift 2 times more than it was in tiles
+        if (enemy.isFacingRight()) {
+            tileSprite.setScale({ scale, scale });
+        } else {
+            tileSprite.setScale({ -scale, scale });
+        }
+
+        float eX = enemy.getX() * TILE_SIZE + (TILE_SIZE / 2.f);
+        float eY = enemy.getY() * TILE_SIZE - 2.f; 
+        
         tileSprite.setPosition({eX, eY});
         window.draw(tileSprite, states); 
     }
+    
 
     // Player
     tileSprite.setTextureRect(playerRect);
     
-    float pX = player.getX() * TILE_SIZE;
-    float pY = player.getY() * TILE_SIZE - 26.f; // same here
-                                                 // tile is 16x16, scale x2, but Player's is 16x28
-                                                 // 28 - 16 = 12; => 12 x 2 = 24; => 24 + 2 = 28;  // our number 2 from the code above (ambiguously :D)  
-                                                 // ^-tile's height                       ^- the 2 here is just a magic number that works    
+    if (player.isFacingRight()) {
+        tileSprite.setScale({ scale, scale });
+    } else {
+        tileSprite.setScale({ -scale, scale });
+    }
+
+    float pX = player.getX() * TILE_SIZE + (TILE_SIZE / 2.f);
+    float pY = player.getY() * TILE_SIZE - (28 - 16) * scale - 2.f; 
+    
     tileSprite.setPosition({pX, pY});
     window.draw(tileSprite, states);
 }
