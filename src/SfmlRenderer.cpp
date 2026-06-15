@@ -78,8 +78,8 @@ void SfmlRenderer::draw(
             tileSprite.setScale({ -scale, scale });
         }
 
-        float eX = enemy.getX() * TILE_SIZE + (TILE_SIZE / 2.f);
-        float eY = enemy.getY() * TILE_SIZE - 2.f; 
+        float eX = enemy.getVisualX() * TILE_SIZE + (TILE_SIZE / 2.f);
+        float eY = enemy.getVisualY() * TILE_SIZE - 2.f; 
         
         tileSprite.setPosition({eX, eY});
         window.draw(tileSprite, states); 
@@ -103,8 +103,8 @@ void SfmlRenderer::draw(
         tileSprite.setScale({ -scale, scale });
     }
 
-    float pX = player.getX() * TILE_SIZE + (TILE_SIZE / 2.f);
-    float pY = player.getY() * TILE_SIZE - (28 - 16) * scale - 2.f; 
+    float pX = player.getVisualX() * TILE_SIZE + (TILE_SIZE / 2.f);
+    float pY = player.getVisualY() * TILE_SIZE - (28 - 16) * scale - 2.f; 
 
 
     tileSprite.setPosition({pX, pY});

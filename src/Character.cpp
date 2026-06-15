@@ -5,9 +5,7 @@ Character::Character(int x, int y, int maxHp, int damage, int hp)
     Entity(x, y),
     maxHp(maxHp),
     damage(damage),
-    hp(hp == -1 ? maxHp : hp),
-    facingRight(true),
-    moving(false)
+    hp(hp == -1 ? maxHp : hp)
 {
 }
 
@@ -24,36 +22,4 @@ int Character::getMaxHp() const
 int Character::getDamage() const
 {
     return damage;
-}
-
-
-bool Character::isFacingRight() const
-{
-    return facingRight;
-}
-
-void Character::faceRight() 
-{
-    facingRight = true;
-}
-
-void Character::faceLeft() 
-{
-    facingRight = false;
-}
-
-
-bool Character::isMoving() const
-{
-    return moving;
-}
-
-void Character::makeMove()
-{
-    moving = true;
-}
-
-void Character::makeStop()
-{
-    moving = false;
 }

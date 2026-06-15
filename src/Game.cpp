@@ -38,9 +38,20 @@ void Game::run()
         music.play();
     }
 
+    sf::Clock clock;
+
     while(window.isOpen())
     {
+        float deltaTime = clock.restart().asSeconds();
+
         ticks++;
+
+        player.updateVisual(deltaTime);
+
+        // now we don't have AI behaviour, so enemies can't move
+        // for(Enemy& enemy : enemies) {
+        //     enemy.updateVisual(deltaTime);
+        // }
 
         input();
 
