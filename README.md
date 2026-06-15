@@ -36,7 +36,7 @@ A 2D roguelike RPG written in C++ using SFML and CMake.
 * Background music support.
 * Audio assets loaded from the `assets` directory.
 
-<video controls src="media/DungeonRPG.mp4" title="Demo"></video>
+https://github.com/user-attachments/assets/ba737a00-8519-4b28-a3fc-7d543a56ea24
 
 ### Technical Features
 
