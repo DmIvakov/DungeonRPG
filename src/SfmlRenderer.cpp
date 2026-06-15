@@ -9,6 +9,9 @@ SfmlRenderer::SfmlRenderer() {
     tileRects[TileType::Floor] = sf::IntRect({16, 64}, {16, 16});
     tileRects[TileType::Wall] = sf::IntRect({16, 16}, {16, 16});
     tileRects[TileType::Exit] = sf::IntRect({48, 96}, {16, 16});
+
+    playerRect = sf::IntRect({128, 100}, {16, 28});
+    enemyRect  = sf::IntRect({368, 88}, {16, 16}); 
 }
 
 void SfmlRenderer::draw(
@@ -22,12 +25,10 @@ void SfmlRenderer::draw(
     sf::RenderStates states;
     // states.transform.translate({ 0.f, 48.f });
 
-
-    // for tiles
+    // Tiles
     sf::Sprite tileSprite(atlasTexture);
     float scale = static_cast<float>(TILE_SIZE) / 16.f;
     tileSprite.setScale({scale, scale});
-
 
     for(int y = 0; y < map.getHeight(); y++)
     {
@@ -52,37 +53,30 @@ void SfmlRenderer::draw(
         }
     }
 
+    tileSprite.setColor(sf::Color::White);
 
-    // for player and enemies 
-    sf::RectangleShape tile(
-        sf::Vector2f(
-            TILE_SIZE,
-            TILE_SIZE
-        )
-    );
-
-    // Player
-    tile.setFillColor(
-        sf::Color::Green
-    );
-
-    tile.setPosition(
-        sf::Vector2f(player.getX() * TILE_SIZE, player.getY() * TILE_SIZE)
-    );
-
-    window.draw(tile, states); 
+     
 
     // Enemies
-    tile.setFillColor(
-        sf::Color::Red
-    );
+    tileSprite.setTextureRect(enemyRect);
 
     for(const Enemy& enemy : enemies)
     {
-        tile.setPosition(
-            sf::Vector2f(enemy.getX() * TILE_SIZE, enemy.getY() * TILE_SIZE)
-        );
-
-        window.draw(tile, states); 
+        float eX = enemy.getX() * TILE_SIZE;
+        float eY = enemy.getY() * TILE_SIZE - 2.f; // not sure why this number, but it does work
+                                                    // I guess it's due to scale(x), so we need shift 2 times more than it was in tiles
+        tileSprite.setPosition({eX, eY});
+        window.draw(tileSprite, states); 
     }
+
+    // Player
+    tileSprite.setTextureRect(playerRect);
+    
+    float pX = player.getX() * TILE_SIZE;
+    float pY = player.getY() * TILE_SIZE - 26.f; // same here
+                                                 // tile is 16x16, scale x2, but Player's is 16x28
+                                                 // 28 - 16 = 12; => 12 x 2 = 24; => 24 + 2 = 28;  // our number 2 from the code above (ambiguously :D)  
+                                                 // ^-tile's height                       ^- the 2 here is just a magic number that works    
+    tileSprite.setPosition({pX, pY});
+    window.draw(tileSprite, states);
 }

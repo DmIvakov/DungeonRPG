@@ -11,7 +11,10 @@ class SfmlRenderer
 {
 private:
     sf::Texture atlasTexture;
+    
     std::unordered_map<TileType, sf::IntRect> tileRects;
+    sf::IntRect playerRect;
+    sf::IntRect enemyRect;
 
 public:
     static constexpr int TILE_SIZE = 32;
