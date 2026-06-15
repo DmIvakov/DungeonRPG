@@ -121,6 +121,3 @@ On Windows:
 * Additional biomes and tilesets
 * ECS research and possible migration
 * Larger standalone RPG project based on the current prototype
-
-```
-```
