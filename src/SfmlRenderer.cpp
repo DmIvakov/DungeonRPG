@@ -115,6 +115,11 @@ void SfmlRenderer::draw(
     window.draw(tileSprite, states);
 
     // TODO: Refactor Enemy and Player animation : DRY
+    // I'm thinking about creating new filed in class game
+    // vector<Entity*> entites 
+    //     which will contains pointers to all entities in the game
+    //     I guess it'll be much better for rendering, etc
+    //     because now we only have vector of enemies and player, but further there may be other kind of entities
 
     // 2 funtions:
     // drawTitles 
