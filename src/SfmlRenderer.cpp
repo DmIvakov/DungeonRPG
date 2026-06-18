@@ -106,9 +106,17 @@ void SfmlRenderer::draw(
     float pX = player.getVisualX() * TILE_SIZE + (TILE_SIZE / 2.f);
     float pY = player.getVisualY() * TILE_SIZE - (28 - 16) * scale - 2.f; 
 
+    // float pY = player.getVisualY() * TILE_SIZE - (playerRect.height - ORIGINAL_TILE_SIZE) * scale - 2.f
+
+    // TODO: scale as class static field
+
 
     tileSprite.setPosition({pX, pY});
     window.draw(tileSprite, states);
 
     // TODO: Refactor Enemy and Player animation : DRY
+
+    // 2 funtions:
+    // drawTitles 
+    // drawEntity(const Entiy& entity)
 }
