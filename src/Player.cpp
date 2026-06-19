@@ -26,7 +26,8 @@ void Player::addExp(int amount)
     {
         exp -= level * 100;
         level++;
-        hp += 10;
+        maxHp += 10;
+        hp = maxHp;
         damage += 2;
     }
 }
