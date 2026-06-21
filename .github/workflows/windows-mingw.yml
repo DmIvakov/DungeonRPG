@@ -16,27 +16,31 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-
-    - name: Setup MinGW
-      uses: egor-tensin/setup-mingw@v3
+      
+    - name: Setup MSYS2 & MinGW
+      uses: msys2/setup-msys2@v2
       with:
-        platform: x64
+        msystem: MINGW64
+        update: true
+        install: >-
+          mingw-w64-x86_64-gcc
+          mingw-w64-x86_64-cmake
+          mingw-w64-x86_64-ninja
+          mingw-w64-x86_64-sfml
 
-    - name: Configure CMake
+    - name: Configure and Build
+      shell: msys2 {0}
       run: |
-        cmake -G "MinGW Makefiles" `
-          -B ${{github.workspace}}/build `
-          -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-
-    - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+        cmake -G "Ninja" -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        cmake --build build --config ${BUILD_TYPE}
 
     - name: Package with CPack
-      working-directory: ${{github.workspace}}/build
+      shell: msys2 {0}
+      working-directory: build
       run: cpack -C ${{env.BUILD_TYPE}}
 
     - name: Upload Release Package
       uses: actions/upload-artifact@v4
       with:
         name: DungeonRPG-Windows-Build
-        path: ${{github.workspace}}/releases/*.zip
+        path: build/releases/*.zip
