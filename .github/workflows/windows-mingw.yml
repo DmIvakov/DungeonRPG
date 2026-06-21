@@ -1,4 +1,4 @@
-name: Windows MinGW SFML3 Build
+name: Build & Package (Windows MinGW)
 
 on:
   push:
@@ -22,19 +22,15 @@ jobs:
       with:
         platform: x64
 
-    - name: Install SFML 3 via vcpkg
-      run: vcpkg install sfml:x64-windows
-
     - name: Configure CMake
       run: |
         cmake -G "MinGW Makefiles" `
           -B ${{github.workspace}}/build `
-          -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} `
-          -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake"
+          -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-      
+
     - name: Package with CPack
       working-directory: ${{github.workspace}}/build
       run: cpack -C ${{env.BUILD_TYPE}}
